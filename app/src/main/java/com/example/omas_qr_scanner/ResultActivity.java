@@ -95,11 +95,12 @@ public class ResultActivity extends AppCompatActivity {
             new Handler(Looper.getMainLooper()).post(() -> {
                 resultView.setText(display.toString());
 
-                if (status.equalsIgnoreCase("Received") || status.equalsIgnoreCase("Expired")) {
-                    markReceivedBtn.setVisibility(View.GONE);
+                if (status.equalsIgnoreCase("For Receiving")) {
+                    markReceivedBtn.setVisibility(View.VISIBLE
+                    );
                     backBtn.setVisibility(View.VISIBLE);
                 } else {
-                    markReceivedBtn.setVisibility(View.VISIBLE);
+                    markReceivedBtn.setVisibility(View.GONE);
                     backBtn.setVisibility(View.VISIBLE);
                 }
             });

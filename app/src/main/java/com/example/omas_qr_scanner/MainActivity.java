@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -20,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasCameraPermission = false;
     private ActivityResultLauncher<String> permissionLauncher;
     private ActivityResultLauncher<ScanOptions> scanLauncher;
-    private TextView resultTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
         Button scanButton = findViewById(R.id.btn_scan);
 
+        // Check for camera permission
         hasCameraPermission = ContextCompat.checkSelfPermission(
                 this, Manifest.permission.CAMERA
         ) == PackageManager.PERMISSION_GRANTED;
 
+        // Handle camera permission result
         permissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 granted -> {
@@ -42,17 +42,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+        // Handle QR scan result
         scanLauncher = registerForActivityResult(new ScanContract(), result -> {
             if (result.getContents() != null) {
-                // Launch ResultActivity with scanned content
+                // If scan is successful, launch ResultActivity
                 Intent intent = new Intent(MainActivity.this, ResultActivity.class);
                 intent.putExtra("scanned_result", result.getContents());
                 startActivity(intent);
-            } else {
-                resultTextView.setText("Cancelled or no result");
             }
+            // If cancelled or no result, do nothing
         });
 
+        // Button click listener
         scanButton.setOnClickListener(v -> {
             if (hasCameraPermission) {
                 startQRScan();
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         options.setPrompt("Scanning...");
         options.setBeepEnabled(true);
         options.setOrientationLocked(true);
-        options.setCaptureActivity(CaptureAct.class); // Optional custom CaptureActivity
+        options.setCaptureActivity(CaptureAct.class); // Optional custom scanner activity
         scanLauncher.launch(options);
     }
 }
