@@ -88,8 +88,9 @@ public class ResultActivity extends AppCompatActivity {
                 display.append("\n\nDetails:")
                         .append("\n1. ").append(parts.optString("part1", ""))
                         .append("\n2. ").append(parts.optString("part2", ""))
-                        .append("\n3. RSBSA No.-").append(parts.optString("part3", ""))
-                        .append("\n4. ").append(parts.optString("ref", ""));
+                        .append("\n3. ").append(parts.optString("part4", "")).append("kg")
+                        .append("\n4. RSBSA No.-").append(parts.optString("part3", ""))
+                        .append("\n5. ").append(parts.optString("ref", ""));
             }
 
             new Handler(Looper.getMainLooper()).post(() -> {
